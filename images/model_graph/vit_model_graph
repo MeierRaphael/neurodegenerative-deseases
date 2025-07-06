@@ -1,0 +1,27 @@
+// ViTForImageClassification
+digraph {
+	fontsize=20 label=ViT labelloc=t rankdir=TB splines=false style=bold
+	Input [label="Input (Image)" color="#C8C8D0" fillcolor="#C8C8D030" shape=ellipse style=filled]
+	Output [label="Output (Classification)" color="#C8C8D0" fillcolor="#C8C8D030" shape=ellipse style=filled]
+	LinearClassifier [label="Linear Classifier" color="#D9B2A0" fillcolor="#D9B2A030" shape=box style=filled]
+	ViTEmbeddings -> ViTEncoder
+	ViTEncoder -> LayerNorm
+	subgraph cluster_vit_model {
+		color="#C8C8D0" fontsize=15 label=ViTModel labeljust=l style=solid
+		ViTEmbeddings [label=ViTEmbeddings color="#D0E8D7" fillcolor="#D0E8D730" shape=box style=filled width=2]
+		ViTEncoder [label=ViTEncoder color="#D0E8D7" fillcolor="#D0E8D730" shape=box style=filled width=2]
+		LayerNorm [label=LayerNorm color="#D0E8D7" fillcolor="#D0E8D730" shape=box style=filled width=2]
+	}
+	ViTEncoder -> FrozenLayers [style=dashed]
+	FrozenLayers -> TrainableLayers [style=dashed]
+	subgraph cluster_vit_encoder {
+		color="#C8C8D0" fontsize=15 label=ViTEncoder style=dashed
+		FrozenLayers [label="ViTLayer 1-2 
+(Frozen)" color="#D0E8D7" fillcolor="#D0E8D730" height=0.33 shape=box style=filled]
+		TrainableLayers [label="ViTLayer 3-12 
+(Trainable)" color="#D0E8D7" fillcolor="#D0E8D730" height=2 shape=box style=filled]
+	}
+	Input -> ViTEmbeddings
+	LayerNorm -> LinearClassifier
+	LinearClassifier -> Output
+}

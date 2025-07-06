@@ -1,0 +1,32 @@
+// CNN Complex
+digraph {
+	fontsize=20 label="CNN Complex" labelloc=t rankdir=TB splines=false style=bold
+	Input [label="Input (Image)" color="#C8C8D0" fillcolor="#C8C8D030" shape=ellipse style=filled]
+	Output [label="Output (Classification)" color="#C8C8D0" fillcolor="#C8C8D030" shape=ellipse style=filled]
+	CNNLayers [label="CNN Layers" color="#D0E8D7" fillcolor="#D0E8D730" shape=box style=filled]
+	subgraph cluster_cnn_details {
+		color="#C8C8D0" fontsize=15 label="CNN Layers" style=dashed
+		Conv1 [label="Conv2d (3, 16, 3x3)
++ ReLU + MaxPool2d (2x2)" color="#D0E8D7" fillcolor="#D0E8D730" shape=box style=filled]
+		Conv2 [label="Conv2d (16, 32, 3x3)
+ + ReLU + MaxPool2d (2x2)" color="#D0E8D7" fillcolor="#D0E8D730" shape=box style=filled]
+		Conv3 [label="Conv2d (32, 64, 3x3)
++ ReLU + MaxPool2d (2x2)" color="#D0E8D7" fillcolor="#D0E8D730" shape=box style=filled]
+	}
+	Flatten [label="Flatten Layer" color="#D9B2A0" fillcolor="#D9B2A030" shape=box style=filled]
+	FC1 [label="Fully Connected
+(512 units)" color="#D9B2A0" fillcolor="#D9B2A030" shape=box style=filled]
+	Dropout [label="Dropout
+(0.5)" color="#D9B2A0" fillcolor="#D9B2A030" shape=box style=filled]
+	FC2 [label="Fully Connected
+(3 classes)" color="#D9B2A0" fillcolor="#D9B2A030" shape=box style=filled]
+	Input -> CNNLayers
+	CNNLayers -> Flatten
+	CNNLayers -> Conv1 [constraint=false style=dashed]
+	Flatten -> FC1
+	FC1 -> Dropout
+	Dropout -> FC2
+	FC2 -> Output
+	Conv1 -> Conv2 [style=dashed]
+	Conv2 -> Conv3 [style=dashed]
+}
